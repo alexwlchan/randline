@@ -29,31 +29,17 @@ fn main() {
         }
     };
 
-    let lines = std::io::stdin().lock().lines()
-        .map(|line| match line {
-          Ok(ln) => ln,
-          Err(e) => {
+    let lines = std::io::stdin().lock().lines().map(|line| match line {
+        Ok(ln) => ln,
+        Err(e) => {
             eprintln!("Unable to read from stdin: {:?}", e);
             std::process::exit(1)
-          }
-        });
-
-    println!("k = {:?}", k);
+        }
+    });
 
     let sample = sampling::reservoir_sample(lines, k);
 
     for line in sample {
-      println!("{}", line);
+        println!("{}", line);
     }
-
-
-        // Read the first N lines from stdout
-        // let stdin = io::stdin();
-
-        // let a = [1, 2, 3, 4, 5, 6];
-        // let iter = a.iter();
-        //
-        // println!("{:?}", sampling::reservoir_sample(iter, n));
-        //
-        // println!("n = {:?}", n);
 }

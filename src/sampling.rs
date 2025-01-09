@@ -17,7 +17,7 @@ pub fn reservoir_sample<T: std::fmt::Debug>(
     // Taking a sample with k=0 doesn't make much sense in practice,
     // but we include this to avoid problems downstream.
     if k == 0 {
-      return vec![];
+        return vec![];
     }
 
     // Create an empty reservoir.
