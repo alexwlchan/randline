@@ -1,4 +1,4 @@
-#![deny(warnings)]
+// #![deny(warnings)]
 
 use std::iter::Iterator;
 
@@ -11,30 +11,30 @@ fn main() {
     //   1 argument N = get that number of lines
     //  >1 arguments  = error
     //
-    let args: Vec<_> = std::env::args().collect();
-
-    let n = match args.len() {
-        1 => 0,
-        2 => match args[1].parse::<usize>() {
-            Ok(parsed_n) => parsed_n,
-            Err(_) => {
-                eprintln!("Usage: randline [N]");
-                std::process::exit(1)
-            }
-        },
-        _ => {
-            eprintln!("Usage: randline [N]");
-            std::process::exit(1)
-        }
-    };
-
-    // Read the first N lines from stdout
-    // let stdin = io::stdin();
-
-    let a = [1, 2, 3];
-    let iter = a.iter();
-
-    println!("{:?}", sampling::reservoir_sample(iter, n));
-
-    println!("n = {:?}", n);
+    // let args: Vec<_> = std::env::args().collect();
+    //
+    //     let n = match args.len() {
+    //         1 => 0,
+    //         2 => match args[1].parse::<i32>() {
+    //             Ok(parsed_n) => parsed_n,
+    //             Err(_) => {
+    //                 eprintln!("Usage: randline [N]");
+    //                 std::process::exit(1)
+    //             }
+    //         },
+    //         _ => {
+    //             eprintln!("Usage: randline [N]");
+    //             std::process::exit(1)
+    //         }
+    //     };
+    //
+    //     // Read the first N lines from stdout
+    //     // let stdin = io::stdin();
+    //
+    //     let a = [1, 2, 3, 4, 5, 6];
+    //     let iter = a.iter();
+    //
+    //     println!("{:?}", sampling::reservoir_sample(iter, n));
+    //
+    //     println!("n = {:?}", n);
 }
