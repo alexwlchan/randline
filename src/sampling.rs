@@ -14,12 +14,18 @@ pub fn reservoir_sample<T: std::fmt::Debug>(
     mut items: impl Iterator<Item = T>,
     k: usize,
 ) -> Vec<T> {
+    // Taking a sample with k=0 doesn't make much sense in practice,
+    // but we include this to avoid problems downstream.
+    if k == 0 {
+      return vec![];
+    }
+
     // Create an empty reservoir.
     //
     // This is a map (weight) -> (item).
     let mut reservoir: HashMap<i32, T> = HashMap::with_capacity(k);
 
-    // Fill the reservoir with the first n items.  If there are less
+    // Fill the reservoir with the first k items.  If there are less
     // than n items, we can exit immediately.
     for _ in 1..=k {
         match items.next() {
@@ -29,6 +35,11 @@ pub fn reservoir_sample<T: std::fmt::Debug>(
     }
 
     // What's the largest weight seen so far?
+    //
+    // Note: we're okay to `unwrap()` here because we know that `reservoir`
+    // contains at least one item.  Either `items` was non-empty, or if itwas
+    // was empty, then we'd already have returned when trying to fill the
+    // reservoir with the first k items.
     let mut max_weight: i32 = *reservoir.keys().max().unwrap();
 
     // Now go through the remaining items.
@@ -96,6 +107,15 @@ mod reservoir_sample_tests {
         let sample = reservoir_sample(items.into_iter(), 3);
 
         assert!(equivalent_items(sample, vec!["a", "b", "c"]));
+    }
+
+    // If k=0, then it returns an empty sample.
+    #[test]
+    fn it_returns_an_empty_sample_if_k_zero() {
+        let items = vec!["a", "b", "c"];
+        let sample = reservoir_sample(items.into_iter(), 0);
+
+        assert_eq!(sample.len(), 0);
     }
 
     // It chooses items with a uniform distribution -- every item has
