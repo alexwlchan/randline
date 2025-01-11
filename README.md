@@ -65,6 +65,19 @@ ragout
 Tarpeia
 ```
 
+You can also pipe the output of another command to it, for example if I wanted to find 5 random words starting with 'a':
+
+```console
+$ grep '^a' /usr/share/dict/words | randline 5
+approachabl
+autecological
+alogical
+ambrain
+anticonstitutionally
+```
+
+
+
 
 
 
