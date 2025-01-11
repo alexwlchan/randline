@@ -10,10 +10,7 @@ use std::collections::HashMap;
 /// on the Wikipedia page:
 /// https://en.wikipedia.org/wiki/Reservoir_sampling#Optimal:_Algorithm_L
 ///
-pub fn reservoir_sample<T: std::fmt::Debug>(
-    mut items: impl Iterator<Item = T>,
-    k: usize,
-) -> Vec<T> {
+pub fn reservoir_sample<T>(mut items: impl Iterator<Item = T>, k: usize) -> Vec<T> {
     // Taking a sample with k=0 doesn't make much sense in practice,
     // but we include this to avoid problems downstream.
     if k == 0 {
