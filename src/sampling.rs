@@ -3,7 +3,7 @@ use std::cmp::Ordering;
 use std::collections::BinaryHeap;
 use std::ptr;
 
-struct ReservoirEntry<T> {
+struct WeightedItem<T> {
     item: T,
     weight: f64,
 }
@@ -15,13 +15,13 @@ struct ReservoirEntry<T> {
 // reservoir entries, if the RNG was bugged and the input has repeated
 // values -- seems unlikely in practice, but this protects against it
 // just in case.]
-impl<T> PartialEq for ReservoirEntry<T> {
+impl<T> PartialEq for WeightedItem<T> {
     fn eq(&self, other: &Self) -> bool {
         ptr::eq(self, other)
     }
 }
 
-impl<T> Eq for ReservoirEntry<T> {}
+impl<T> Eq for WeightedItem<T> {}
 
 // Rust doesn't implement ordering for f64 because it includes NaN
 // which makes everything a mess.  In particular NaN isn't comparable
@@ -30,13 +30,13 @@ impl<T> Eq for ReservoirEntry<T> {}
 // We're generating all the f64 weights we'll be dealing with, so we
 // know we'll never have NaN in the mix -- we can do a partial comparison
 // and assert the two values are comparable when we unwrap.
-impl<T> PartialOrd for ReservoirEntry<T> {
+impl<T> PartialOrd for WeightedItem<T> {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
         Some(self.cmp(other))
     }
 }
 
-impl<T> Ord for ReservoirEntry<T> {
+impl<T> Ord for WeightedItem<T> {
     fn cmp(&self, other: &Self) -> Ordering {
         self.weight.partial_cmp(&other.weight).unwrap()
     }
@@ -59,13 +59,13 @@ pub fn reservoir_sample<T>(mut items: impl Iterator<Item = T>, k: usize) -> Vec<
     }
 
     // Create an empty reservoir.
-    let mut reservoir: BinaryHeap<ReservoirEntry<T>> = BinaryHeap::with_capacity(k);
+    let mut reservoir: BinaryHeap<WeightedItem<T>> = BinaryHeap::with_capacity(k);
 
     // Fill the reservoir with the first k items.  If there are less
     // than n items, we can exit immediately.
     for _ in 1..=k {
         match items.next() {
-            Some(this_item) => reservoir.push(ReservoirEntry {
+            Some(this_item) => reservoir.push(WeightedItem {
                 item: this_item,
                 weight: pick_weight(),
             }),
@@ -95,7 +95,7 @@ pub fn reservoir_sample<T>(mut items: impl Iterator<Item = T>, k: usize) -> Vec<
         // Otherwise, this item has a lower weight than the current item
         // with max weight -- so we'll replace that item.
         assert!(reservoir.pop().is_some());
-        reservoir.push(ReservoirEntry {
+        reservoir.push(WeightedItem {
             item: this_item,
             weight: this_weight,
         });
