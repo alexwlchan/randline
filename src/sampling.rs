@@ -111,7 +111,7 @@ pub fn reservoir_sample<T>(mut items: impl Iterator<Item = T>, k: usize) -> Vec<
 
 /// Create a random weight u_i ~ U[0,1]
 fn pick_weight() -> f64 {
-    rand::thread_rng().gen_range(0.0..1.0)
+    rand::rng().random_range(0.0..1.0)
 }
 
 #[cfg(test)]
