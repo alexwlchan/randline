@@ -35,8 +35,8 @@ You need Rust installed; I recommend using [Rustup].
 Then clone this repository and compile the code:
 
 ```console
-$ git clone "https://github.com/alexwlchan/emptydir.git"
-$ cd emptydir
+$ git clone "https://github.com/alexwlchan/randline.git"
+$ cd randline
 $ cargo install --path .
 ```
 
