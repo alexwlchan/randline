@@ -1,8 +1,0 @@
-[package]
-name = "randline"
-version = "1.0.1"
-edition = "2021"
-
-[dependencies]
-assert_cmd = "2"
-rand = "0.9"
